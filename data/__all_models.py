@@ -21,7 +21,7 @@ class Skill(SqlAlchemyBase):
 
 
 class Contact(SqlAlchemyBase):
-    __tablename__ = 'skills'
+    __tablename__ = 'contacts'
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     author = sa.Column(sa.Integer, sa.ForeignKey("users.id"))
     name = sa.Column(sa.Text)

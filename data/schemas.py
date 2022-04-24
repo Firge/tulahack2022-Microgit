@@ -5,7 +5,7 @@ from typing import Optional
 
 class User(BaseModel):
     phone: str
-    email: EmailStr
+    email: str
     name: str
     surname: str
     age: int
