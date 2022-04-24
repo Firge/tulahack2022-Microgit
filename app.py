@@ -7,13 +7,16 @@ app = FastAPI()
 db_session.global_init('db/blogs.db')
 
 
-@app.get('/api/get_portfolio/{user_id}', response_model=schemas.User)
+@app.get('/api/get_portfolio/{user_id}')
 async def get_portfolio(user_id: int):
     session = db_session.create_session()
     user = session.query(User).get(user_id)
+    achievements = session.query(Achievement).filter(Achievement.author == user_id).all()
+    contacts = session.query(Contact).filter(Contact.author == user_id).all()
+    skills = session.query(Skill).filter(Skill.author == user_id).all()
     if not user:
         raise HTTPException(404, 'User not found')
-    return user
+    return [achievements, contacts, skills, user]
 
 
 @app.delete('/api/delete_user/{user_id}')
@@ -44,8 +47,16 @@ async def reg_user(new_user: schemas.User):
     session = db_session.create_session()
     session.add(new_user)
     session.commit()
-    user = session.query(User).filter(User.id == 1).scalar()
-    return user
+    return 'Ok'
+
+
+@app.post('/api/add_contact', response_model=schemas.Contact)
+async def add_contact(new_contact: schemas.Contact):
+    new_contact = Contact(**new_contact.dict())
+    session = db_session.create_session()
+    session.add(new_contact)
+    session.commit()
+    return 'Ok'
 
 
 @app.post('/api/add_skill', response_model=schemas.Skill)

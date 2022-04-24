@@ -28,8 +28,7 @@ class Skill(BaseModel):
     name: str
 
 
-class Comment(BaseModel):
-    author: str
+class Contact(BaseModel):
+    author: int
     text: str
-    post_datetime: datetime
-    article_id: int
+    link: str
